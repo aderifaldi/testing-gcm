@@ -33,7 +33,6 @@ import com.radyalabs.gcmtesting.app.util.GlobalVariable;
 public class MyGcmListenerService extends GcmListenerService {
 
     private String message;
-    private String title;
     private Intent intent;
     NotificationCompat.Builder notificationBuilder;
     PendingIntent pendingIntent;
@@ -52,7 +51,6 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
 
-        title = data.getString("sender");
         message = data.getString("message");
 
         notificationId = GlobalVariable.getNotificationId(this);
@@ -75,7 +73,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
+                .setContentTitle("Radya Labs Cloud Messaging")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

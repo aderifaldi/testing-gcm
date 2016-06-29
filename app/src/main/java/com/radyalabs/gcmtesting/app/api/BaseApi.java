@@ -14,7 +14,7 @@ import org.apache.http.protocol.HTTP;
 
 public abstract class BaseApi {
 
-	public static final String BASE_URL = "https://public-api.wordpress.com/rest/v1/sites/";
+	public static final String BASE_URL = "http://192.168.1.203:56771/Api/";
 
 	protected Context context;
 	protected RequestParams params;

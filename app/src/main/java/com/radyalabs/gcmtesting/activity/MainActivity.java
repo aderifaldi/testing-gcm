@@ -10,9 +10,10 @@ import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.widget.CompoundButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -22,46 +23,28 @@ import com.radyalabs.gcmtesting.app.api.APIUnRegisterNotification;
 import com.radyalabs.gcmtesting.app.gcm.QuickstartPreferences;
 import com.radyalabs.gcmtesting.app.gcm.RegistrationIntentService;
 import com.radyalabs.gcmtesting.app.util.GlobalVariable;
-import com.radyalabs.irfan.util.AppUtility;
 
-public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private boolean isRegistered;
+    private boolean isRegisteredToServer;
     private String deviceId;
 
-    private SwitchCompat switch_push_notification;
-    private boolean isNotificationOn;
+    private TextView txt_is_registered_gcm, txt_is_registered_server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        switch_push_notification = (SwitchCompat) findViewById(R.id.switch_push_notification);
-
-        isNotificationOn = GlobalVariable.getIsRegisterPush(this);
-
-        if (isNotificationOn){
-            switch_push_notification.setChecked(true);
-
-            isRegistered = GlobalVariable.getIsRegisterPush(getApplicationContext());
-            if (!isRegistered){
-                registerToken();
-            }
-
-        }else {
-            switch_push_notification.setChecked(false);
-        }
-
-        switch_push_notification.setOnCheckedChangeListener(this);
-
         deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         GlobalVariable.saveDeviceId(this, deviceId);
-        AppUtility.logD("MainActivity", "device id : " + deviceId);
+
+        txt_is_registered_gcm = (TextView) findViewById(R.id.txt_is_registered_gcm);
+        txt_is_registered_server = (TextView) findViewById(R.id.txt_is_registered_server);
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -70,6 +53,20 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+
+                isRegisteredToServer = GlobalVariable.getIsRegisterPush(getApplicationContext());
+
+                if (sentToken){
+
+                    if (!isRegisteredToServer){
+                        registerToken();
+                        txt_is_registered_gcm.setText("Register to GCM Server Success");
+                    }else {
+                        txt_is_registered_gcm.setText("This Device Registered to GCM Server");
+                        txt_is_registered_server.setText("This Device Registered to Ega Server");
+                    }
+
+                }
 
             }
         };
@@ -83,26 +80,19 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     private void registerToken(){
         APIRegisterNotification apiRegisterNotification = new APIRegisterNotification(getApplicationContext(),
+                GlobalVariable.getDeviceId(getApplicationContext()),
                 GlobalVariable.getGCMToken(getApplicationContext())) {
             @Override
             public void onFinishRequest(boolean success, String returnItem) {
                 if (success){
-                    GlobalVariable.saveIsRegisterPush(getApplicationContext(), true);
-                    switch_push_notification.setChecked(true);
-                }
-            }
-        };
-        apiRegisterNotification.executeAjax();
-    }
 
-    private void unRegisterToken(){
-        APIUnRegisterNotification apiRegisterNotification = new APIUnRegisterNotification(getApplicationContext(),
-                GlobalVariable.getGCMToken(getApplicationContext())) {
-            @Override
-            public void onFinishRequest(boolean success, String returnItem) {
-                if (success){
-                    GlobalVariable.saveIsRegisterPush(getApplicationContext(), false);
-                    switch_push_notification.setChecked(false);
+                    if (data.getStatus() == 1){
+                        GlobalVariable.saveIsRegisterPush(getApplicationContext(), true);
+
+                        txt_is_registered_server.setText(data.getMessage());
+
+                    }
+
                 }
             }
         };
@@ -138,16 +128,4 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         return true;
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()){
-            case R.id.switch_push_notification:
-                if (isChecked) {
-                    registerToken();
-                } else {
-                    unRegisterToken();
-                }
-                break;
-        }
-    }
 }

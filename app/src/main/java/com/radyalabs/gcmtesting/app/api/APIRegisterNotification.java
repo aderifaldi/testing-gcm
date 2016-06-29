@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.radyalabs.async.AsyncHttpResponseHandler;
 import com.radyalabs.gcmtesting.app.model.ModelRegisterNotification;
+import com.radyalabs.gcmtesting.app.util.GlobalVariable;
 import com.radyalabs.irfan.util.AppUtility;
 
 import org.apache.http.Header;
@@ -22,11 +23,15 @@ abstract public class APIRegisterNotification extends BaseApi{
     private Gson gson;
     private GsonBuilder gsonBuilder;
 
-    public APIRegisterNotification(Context context, String token) {
+    public APIRegisterNotification(Context context, String deviceId, String token) {
         super(context);
 
         ajaxType = AjaxType.POST;
-        endpointApi = "aderifaldi.wordpress.com/posts/";
+        endpointApi = "Reg";
+
+        params.put("app_token", "01b307acba4f54f55aafc33bb06bbbf6ca803e9a");
+        params.put("device_id", deviceId);
+        params.put("device_token", token);
 
         responseHandler = new AsyncHttpResponseHandler() {
 

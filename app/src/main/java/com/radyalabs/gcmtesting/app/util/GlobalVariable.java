@@ -11,7 +11,7 @@ public class GlobalVariable {
     public static final String PREF_NAME = "TesGCMPref";
     public static final String ISREGISTERPUSH = "isRegisterPush";
     private static final String GCM_TOKEN = "deviceToken";
-    private static final String DEVICE_ID = "deviceToken";
+    private static final String DEVICE_ID = "deviceId";
     public static final String NOTIFICATION_ID = "notificationId";
     public static final String NOTIFICATION_REQUEST_CODE = "requestCode";
 
