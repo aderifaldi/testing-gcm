@@ -14,11 +14,12 @@ import org.apache.http.protocol.HTTP;
 
 public abstract class BaseApi {
 
-	public static final String BASE_URL = "http://192.168.1.203:56771/Api/";
+	public static final String BASE_URL_LOCAL = "http://192.168.1.203:56771/Api/";
+	public static final String BASE_URL_PUBLIC = "http://pushstaging.azurewebsites.net/Api/";
 
 	protected Context context;
 	protected RequestParams params;
-	protected static String baseApi = BASE_URL;
+	protected static String baseApi = BASE_URL_PUBLIC;
 	protected String endpointApi;
 	protected AjaxType ajaxType;
 	protected String jsonRaw;
