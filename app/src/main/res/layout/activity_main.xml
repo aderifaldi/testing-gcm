@@ -9,6 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:id="@+id/txt_base_api"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+    <TextView
         android:id="@+id/txt_is_registered_gcm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,5 +28,12 @@
         android:layout_height="wrap_content"
         android:text="Registering Device to Ega Server..."
         android:textSize="16sp"/>
+
+    <Button
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SETTING BASE API"
+        android:onClick="goToSetting"/>
 
 </LinearLayout>

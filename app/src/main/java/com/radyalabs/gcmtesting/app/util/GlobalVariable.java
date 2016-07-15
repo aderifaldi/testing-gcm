@@ -10,7 +10,9 @@ public class GlobalVariable {
 
     public static final String PREF_NAME = "TesGCMPref";
     public static final String ISREGISTERPUSH = "isRegisterPush";
+    public static final String ISBASEAPISETUP = "isBaseAPISetup";
     private static final String GCM_TOKEN = "deviceToken";
+    private static final String BASE_API = "baseAPI";
     private static final String DEVICE_ID = "deviceId";
     public static final String NOTIFICATION_ID = "notificationId";
     public static final String NOTIFICATION_REQUEST_CODE = "requestCode";
@@ -27,6 +29,18 @@ public class GlobalVariable {
         return sharedPreferences.getBoolean(ISREGISTERPUSH, false);
     }
 
+    public static void saveIsBaseAPISetup(Context context, boolean data) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(GlobalVariable.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(ISBASEAPISETUP, data);
+        editor.apply();
+    }
+
+    public static boolean getIsBaseAPISetup(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(GlobalVariable.PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(ISBASEAPISETUP, false);
+    }
+
     public static void saveGCMToken(Context context, String deviceToken) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(GlobalVariable.PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -37,6 +51,20 @@ public class GlobalVariable {
     public static String getGCMToken(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(GlobalVariable.PREF_NAME, Context.MODE_PRIVATE);
         String deviceToken = sharedPreferences.getString(GCM_TOKEN, null);
+
+        return deviceToken;
+    }
+
+    public static void saveBaseAPI(Context context, String deviceToken) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(GlobalVariable.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(BASE_API, deviceToken);
+        editor.apply();
+    }
+
+    public static String getBaseAPI(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(GlobalVariable.PREF_NAME, Context.MODE_PRIVATE);
+        String deviceToken = sharedPreferences.getString(BASE_API, null);
 
         return deviceToken;
     }

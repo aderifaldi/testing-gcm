@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRegisteredToServer;
     private String deviceId;
 
-    private TextView txt_is_registered_gcm, txt_is_registered_server;
+    private TextView txt_is_registered_gcm, txt_is_registered_server, txt_base_api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         txt_is_registered_gcm = (TextView) findViewById(R.id.txt_is_registered_gcm);
         txt_is_registered_server = (TextView) findViewById(R.id.txt_is_registered_server);
+        txt_base_api = (TextView) findViewById(R.id.txt_base_api);
+
+        txt_base_api.setText("base api: " + GlobalVariable.getBaseAPI(this));
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -76,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         }
+    }
+
+    public void goToSetting(View view){
+        startActivity(new Intent(this, SettingActivity.class));
     }
 
     private void registerToken(){

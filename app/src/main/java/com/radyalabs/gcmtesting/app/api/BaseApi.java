@@ -6,6 +6,7 @@ import android.util.Base64;
 import com.radyalabs.async.AsyncHttpClient;
 import com.radyalabs.async.AsyncHttpResponseHandler;
 import com.radyalabs.async.RequestParams;
+import com.radyalabs.gcmtesting.app.util.GlobalVariable;
 import com.radyalabs.irfan.util.AppUtility;
 
 import org.apache.http.entity.StringEntity;
@@ -19,7 +20,7 @@ public abstract class BaseApi {
 
 	protected Context context;
 	protected RequestParams params;
-	protected static String baseApi = BASE_URL_PUBLIC;
+	protected static String baseApi;
 	protected String endpointApi;
 	protected AjaxType ajaxType;
 	protected String jsonRaw;
@@ -39,6 +40,7 @@ public abstract class BaseApi {
 
 	public BaseApi(Context context){
 		this.context = context;
+		baseApi = GlobalVariable.getBaseAPI(context);
 		params = new RequestParams();
 		endpointApi = "";
 		ajaxType = AjaxType.GET;
